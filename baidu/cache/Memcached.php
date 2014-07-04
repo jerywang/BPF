@@ -19,13 +19,4 @@ class Cache_Memcached extends Memcached {
     public function setEnable ($boolean) {
         $this->enableCache = $boolean;
     }
-    /*********memcached写法********/
-//    public function _addServers(){
-//        $cache_config = BPF::getInstance()->getConfig('cache');
-//        $this->addServers($cache_config['cache']['servers']);
-//    }
-    public function _addServers(){
-        $cache_config = BPF::getInstance()->getConfig('Config_Cache');
-        $this->addServers($cache_config['memcache']);
-    }
 }

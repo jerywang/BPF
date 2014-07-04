@@ -103,7 +103,7 @@ class Http_Curl {
 					CURLOPT_HEADER => 0,
 					CURLOPT_RETURNTRANSFER => 1,
 					CURLOPT_FOLLOWLOCATION=>1,
-					CURLOPT_TIMEOUT=>$this->get_timeout();
+					CURLOPT_TIMEOUT=>$this->get_timeout()
 			);
 		}
 		// add curl options to each handle

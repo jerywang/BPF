@@ -476,7 +476,7 @@ abstract class Dao_Base {
      * @return null;
      */
     public function setCacheEnable ($boolean) {
-        $this->getCache()->setEnable($boolean);
+        Cache_Factory::getInstance()->setEnable($boolean);
     }
 
     public function getKey ($str) {
@@ -677,7 +677,7 @@ abstract class Dao_Base {
     }
 
     /**
-     * @var Cache_Memcached
+     * @var Memcached
      */
     private $_cache = null;
 
@@ -687,8 +687,7 @@ abstract class Dao_Base {
      */
     public function getCache () {
         if ($this->_cache === null) {
-            $this->_cache = new Cache_Memcached();
-            $this->_cache->_addServers();
+            $this->_cache = Cache_Factory::getInstance()->getMemcache();
         }
         return $this->_cache;
     }

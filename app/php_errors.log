@@ -2521,3 +2521,43 @@ Stack trace:
 [05-Jul-2014 00:11:14 Asia/shanghai] Controller_App_Home_Index
 [05-Jul-2014 00:13:11 Asia/shanghai] Controller_App_Home_Index
 [05-Jul-2014 00:17:38 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 05:37:29 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 05:37:29 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 05:38:55 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 05:38:55 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 05:39:00 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 05:39:00 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 05:41:05 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 05:41:05 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 06:10:24 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:10:24 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 06:10:47 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:10:47 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 06:12:34 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:12:34 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 06:12:36 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:12:36 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 06:12:53 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:12:53 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 06:12:55 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:12:55 Asia/shanghai] PHP Fatal error:  Call to undefined method Memcached::setEnable() in /home/jerry/Lamp/app/BPF/baidu/dao/Base.php on line 479
+[05-Jul-2014 06:14:28 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:29 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:30 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:31 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:32 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:46 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:48 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:49 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:49 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:49 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:49 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:49 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:50 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:50 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:50 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:50 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:51 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:51 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:51 Asia/shanghai] Controller_App_Home_Index
+[05-Jul-2014 06:14:51 Asia/shanghai] Controller_App_Home_Index
