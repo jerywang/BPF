@@ -1,0 +1,40 @@
+目录结构
+./app 
+	./controller
+	./library
+		./config
+		./WEBInterceptor.php
+		ect.
+	./model
+		./dao
+		./service
+			./data
+			./page
+	./script
+	./view
+	./xhprof
+
+
+./baidu 框架目录
+	
+./core  公用库及API
+	./service
+		./data
+		./page
+	./dao
+
+
+框架中class自动加载的顺序
+		APP_PATH,
+        APP_PATH.'model',
+	    APP_PATH.'library',
+        ROOT_PATH.'core',
+        ROOT_PATH.'baidu',
+
+
+httpd-2.2.22 bug
+BPF会出现run 2次 可以在loadController方法里面记录error_log跟踪到
+
+php_errors.log位置
+	apache/log/error.log
+	app/php-errors.log
