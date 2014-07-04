@@ -7,8 +7,8 @@ class Config_Cache {
                     array ('127.0.0.1', 11211, 34 ),
             ),
             'redis' => array (
-                    array ('127.0.0.1', 6379),
-                    array ('127.0.0.1', 6379),
+            		'master' =>  array ('ip'=>'127.0.0.1', 'port'=>6379, 'timeout'=>3),
+                    'slaver' =>  array ('ip'=>'127.0.0.1', 'port'=>6379, 'timeout'=>3),
             ),
     );
 }

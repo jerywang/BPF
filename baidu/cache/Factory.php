@@ -56,6 +56,8 @@ class Cache_Factory {
 		return $memcache;
 	}
 	
+	private $memcache;
+	
 	/**
 	 * cache 功能是否开启
 	 * @var boolean
