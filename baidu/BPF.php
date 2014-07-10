@@ -44,16 +44,11 @@ final class BPF {
         $this->running = false;
     }
 
-    public function getConfig($name=null) {
-        if (!$name){
-            return null;
-        }
-    	if (isset($this->configures[$name])){
-    		return $this->configures[$name];
+    public function getConfig($name = 'Config_Common') {
+    	if (empty($this->configures[$name])){
+    		$this->configures[$name] = $this->loadConfig($name);
     	}
-    	$config = $this->loadConfig($name);
-    	$this->configures[$name] = $config;
-    	return $config;
+    	return $this->configures[$name];
     }
 
     public function loadConfig($name) {
@@ -64,29 +59,23 @@ final class BPF {
     private $configures = array ();
     
     protected function getInterceptor($class="WEBInterceptor", $path="interceptor") {
-    	if($this->interceptor){
-    		return $this->interceptor;
+    	if(!$this->interceptor){
+    		$this->interceptor = new $class();
     	}
-    	$this->interceptor = new $class();
     	return $this->interceptor;
     }
     
-    private $interceptor;
+    private $interceptor = null;
     
     /**
      * @param string $class
      * @return Controller
      */
-    public function getController($class) {
-        if (!$class) {
-            return false;
+    public function getController($class = 'Controller_404') {
+        if (empty($this->controllers[$class])) {
+	        $this->controllers[$class] = $this->loadController($class);
         }
-        if (isset($this->controllers[$class])) {
-            return $this->controllers[$class];
-        }
-        $controller = $this->loadController($class);
-        $this->controllers[$class] = $controller;
-        return $controller;
+        return $this->controllers[$class];
     }
 
     /**
