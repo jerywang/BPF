@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: component.php Jul 2, 2014 wangguoxing (wangguoxing@baidu.com) $
+ * $Id: component.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
  * @desc page组件
  */
 class Component {

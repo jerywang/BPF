@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: BPF.php Jul 2, 2014 wangguoxing (wangguoxing@baidu.com) $
+ * $Id: BPF.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
  */
 final class BPF {
     /**

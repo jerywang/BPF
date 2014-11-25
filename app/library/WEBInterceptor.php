@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: WEBInterceptor.php Jul 2, 2014 wangguoxing (wangguoxing@baidu.com) $
+ * $Id: WEBInterceptor.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
  */
 class WEBInterceptor extends Interceptor{
     public function before() {

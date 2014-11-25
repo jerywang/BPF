@@ -89,7 +89,7 @@ class Http_Curl {
 	/**
 	 * 非阻塞模式批量http请求
 	 * $urls = array (
-	 * 		"url1" => array ("url" => "http://www.baidu.com/"),
+	 * 		"url1" => array ("url" => "http://www.system.com/"),
 	 * 		"url2" => array ("url" => "http://www.nuomi.com/"),
 	 * );
 	 */

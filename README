@@ -29,11 +29,8 @@
 	APP_PATH.'model',
 	APP_PATH.'library',
 	ROOT_PATH.'core',
-	ROOT_PATH.'baidu',
+	ROOT_PATH.'system',
 
-
-httpd-2.2.22 bug
-BPF会出现run 2次 可以在loadController方法里面记录error_log跟踪到
 
 php_errors.log位置
 	apache/log/error.log
