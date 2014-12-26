@@ -15,7 +15,7 @@
 	./xhprof
 
 
-./baidu 框架目录
+./system 框架目录
 	
 ./core  公用库及API
 	./service
