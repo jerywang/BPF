@@ -7,8 +7,8 @@ class Script_App_Test {
         $userPage = new Service_App_User();
         print_r($userPage->getUserInfo(1));
         
-        $coreUserPage = new Service_Page_App_User();
-        print_r($coreUserPage->execute(array("uid"=>2)));
+//        $coreUserPage = new Service_Page_App_User();
+//        print_r($coreUserPage->execute(array("uid"=>2)));
     }
     
 }

@@ -35,3 +35,11 @@
 php_errors.log位置
 	apache/log/error.log
 	app/php-errors.log
+
+database
+    slave负载均衡
+    slave故障剔除
+
+todo mysql集群
+    master故障转移
+

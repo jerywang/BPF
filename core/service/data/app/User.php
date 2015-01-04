@@ -2,7 +2,7 @@
 class Service_Data_App_User extends Service_Data_Base {
     
     public function getUserInfo($uid) {
-        $userInfo = $this->getDefaultDao()->findById($uid);
+        $userInfo = $this->getDefaultDao()->select(array('id'=>$uid));
         return $userInfo;
     }
     

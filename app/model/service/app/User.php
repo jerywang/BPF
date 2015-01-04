@@ -2,17 +2,17 @@
 class Service_App_User extends Service_Data_Base {
     
     public function getUserInfo($uid) {
-        $userInfo = $this->getDefaultDao()->findById($uid);
+        $userInfo = $this->getDefaultDao()->select(array('id'=>$uid));
         return $userInfo;
     }
     
     public function getUserList($conds = array(), $orderBy = null, $limit = 100, $offset =0) {
-        $userList = $this->getDefaultDao()->findAssoc($conds);
+        $userList = $this->getDefaultDao()->select($conds,$orderBy,$limit,$offset);
         return $userList;
     }
     
     public function findCount($conds = array(), $field = ''){
-        return $this->getDefaultDao()->findCount($conds, $field);
+        return $this->getDefaultDao()->selectCount($conds, $field);
     }
     
     public function insert($data){
@@ -22,7 +22,7 @@ class Service_App_User extends Service_Data_Base {
     
     /**
      * 获取默认DAO
-     * @return Ambigous <DAO, NULL>
+     * @return Dao_App_User
      */
     public function getDefaultDao() {
         return $this->getDao('Dao_App_User');

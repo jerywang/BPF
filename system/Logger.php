@@ -4,76 +4,70 @@
  */
 class Logger {
 
+    protected static $properties = array(
+        0 => 'debug',
+        1 => 'info',
+        2 => 'notice',
+        3 => 'warning',
+        4 => 'error',
+    );
+
     /**
-     * @param name string
-     * @param messages string
+     * @param  string $str
+     * @return bool
      */
-    public static function debug() {
-        $args = func_get_args();
-        $args = array_merge(array(LOG_DEBUG), $args);
-        return self::log($args);
+    public static function debug($str) {
+        return self::log($str, 0);
     }
 
     /**
-     * @param name string
-     * @param messages string
+     * @param  string $str
+     * @return bool
      */
-    public static function info() {
-        $args = func_get_args();
-        $args = array_merge(array(LOG_INFO), $args);
-        return self::log($args);
+    public static function info($str) {
+        return self::log($str, 1);
     }
 
     /**
-     * @param name string
-     * @param messages string
+     * @param  string $str
+     * @return bool
      */
-    public static function notice() {
-        $args = func_get_args();
-        $args = array_merge(array(LOG_NOTICE), $args);
-        return self::log($args);
+    public static function notice($str) {
+        return self::log($str, 2);
     }
 
     /**
-     * @param name string
-     * @param messages string
+     * @param  string $str
+     * @return bool
      */
-    public static function warning() {
-        $args = func_get_args();
-        $args = array_merge(array(LOG_WARNING), $args);
-        return self::log($args);
+    public static function warning($str) {
+        return self::log($str, 3);
     }
 
     /**
-     * @param name string
-     * @param messages string
+     * @param  string $str
+     * @return bool
      */
-    public static function error() {
-        $args = func_get_args();
-        $args = array_merge(array(LOG_ERR), $args);
-        return self::log($args);
+    public static function error($str) {
+        return self::log($str, 4);
     }
 
     /**
-     * @param name string
-     * @param messages string
+     * @param  string $str
+     * @return bool
      */
-    public static function fatal() {
-        $args = func_get_args();
-        $args = array_merge(array(LOG_CRIT), $args);
-        return self::log($args);
+    public static function fatal($str) {
+        return self::log($str, 5);
     }
 
     /**
-     * @param priority int
-     * @param name string
-     * @param messages string
+     * @param  string $str
+     * @param  int $property
+     * @return bool
      */
-    private static function log($args) {
-        file_put_contents(ROOT_PATH.'BPF.log', '[msg]: '.$args[1].PHP_EOL, FILE_APPEND);
+    private static function log($str, $property) {
+        $logFile = ROOT_PATH.'log/'.self::$properties[$property].'.'.date('YmdH').'.log';
+        file_put_contents($logFile, $str.PHP_EOL, FILE_APPEND);
         return true;
     }
-
-    private $priority;
-    private $priorities = array();
 }

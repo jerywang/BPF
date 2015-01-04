@@ -2,9 +2,9 @@
 /**
  * $Id: Index.php Jul 4, 2014 wangguoxing (wangguoxing@system.com) $
  */
-class Controller_App_Home_Index extends Controller{
+class Controller_App_Home_Index extends Controller_App_Base {
     
-    public function execute() {
+    public function call() {
         //from self data
         $msUser = new Service_App_User();
         $userInfo = $msUser->getUserInfo(2);
@@ -32,5 +32,12 @@ class Controller_App_Home_Index extends Controller{
 
         echo BPF::getInstance()->getCurrentController().'<br>';
         return 'App_Home_Index';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getClass() {
+        return __CLASS__;
     }
 }

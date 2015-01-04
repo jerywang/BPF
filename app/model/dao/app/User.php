@@ -9,12 +9,8 @@ class Dao_App_User extends Dao_Base {
         return 'user';
     }
     
-    public function getReadPdoName() {
-        return "slave";
+    public function getClusterName() {
+        return "bpf";
     }
 
-    public function getWritePdoName() {
-        return "master";
-    }
-    
 }

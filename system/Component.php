@@ -23,7 +23,10 @@ class Component {
         }
         else {
             echo $pagePath.' not found!';
-            throw new Exception($pagePath.' not found!', 1002);
+            throw new Exception(
+                $page.Const_ErrorMapping::getErrMsgByCode(Const_ErrorMapping::ERR_SYS_CLASS_NOT_FOUND),
+                Const_ErrorMapping::ERR_SYS_CLASS_NOT_FOUND
+            );
         }
     }
     
@@ -37,17 +40,4 @@ class Component {
     
     public static $params;
     
-    /**
-     * @param String $var   要查找的变量
-     * @param Array  $scope 要搜寻的范围
-     * @param String        变量名称
-     */
-    public static function getVarName($var, $scope=null){
-        $scope = $scope==null? $GLOBALS : $scope;
-        $tmp = $var;
-        $var = 'tmp_value_'.mt_rand();
-        $name = array_search($var, $scope, true); // 根据值查找变量名称
-        $var = $tmp;
-        return $name;
-    }
 }
