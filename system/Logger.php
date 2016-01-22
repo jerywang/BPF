@@ -1,4 +1,5 @@
 <?php
+
 /**
  * $Id: Logger.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
  */
@@ -18,6 +19,17 @@ class Logger {
      */
     public static function debug($str) {
         return self::log($str, 0);
+    }
+
+    /**
+     * @param  string $str
+     * @param  int $property
+     * @return bool
+     */
+    private static function log($str, $property) {
+        $logFile = ROOT_PATH . 'log/' . self::$properties[$property] . '.' . date('YmdH') . '.log';
+        file_put_contents($logFile, $str . PHP_EOL, FILE_APPEND);
+        return true;
     }
 
     /**
@@ -58,16 +70,5 @@ class Logger {
      */
     public static function fatal($str) {
         return self::log($str, 5);
-    }
-
-    /**
-     * @param  string $str
-     * @param  int $property
-     * @return bool
-     */
-    private static function log($str, $property) {
-        $logFile = ROOT_PATH.'log/'.self::$properties[$property].'.'.date('YmdH').'.log';
-        file_put_contents($logFile, $str.PHP_EOL, FILE_APPEND);
-        return true;
     }
 }

@@ -1,25 +1,26 @@
 <?php
-class uTIL_Compress{
+
+class uTIL_Compress {
 
     /**
      * css文件过期时间,默认为12小时
      */
     public $lifeTime = 43200;
 
-    public function __construct(){
-        header ("cache-control: must-revalidate");
+    public function __construct() {
+        header("cache-control: must-revalidate");
         $expire_time = $this->getTime();
-        $expire = "expires: " . gmdate ("D, d M Y H:i:s", time() + $expire_time) . " GMT";
-        header ($expire);
+        $expire = "expires: " . gmdate("D, d M Y H:i:s", time() + $expire_time) . " GMT";
+        header($expire);
         ob_start("self::compress");
     }
 
-    public function setTime($time){
-        $this->lifeTime = $time;
+    public function getTime() {
+        return $this->lifeTime;
     }
 
-    public function getTime(){
-        return $this->lifeTime;
+    public function setTime($time) {
+        $this->lifeTime = $time;
     }
 
     public function compress($buffer) {
@@ -30,18 +31,17 @@ class uTIL_Compress{
         return $buffer;
     }
 
-    public function import($files){
-        if(is_array($files)){
-            foreach ($files as $file){
+    public function import($files) {
+        if (is_array($files)) {
+            foreach ($files as $file) {
                 include($file);
             }
-        }
-        else {
+        } else {
             include($files);
         }
     }
 
-    public function end(){
+    public function end() {
         ob_end_flush();
     }
 

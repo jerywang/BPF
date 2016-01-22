@@ -1,21 +1,54 @@
 <?php
+
 /**
  * $Id: BPF.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
  */
 final class BPF {
-    /**
-     * @return BPF The instance of BPF
-     */
-    public static function &getInstance() {
-        if (! self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
 
     private static $instance;
 
-    private function __construct() {}
+    public $currentController = null;
+
+    private $configures = array();
+
+    private $interceptor = null;
+
+    private $controllers = array();
+
+    /**
+     * @var Router
+     */
+    private $router;
+
+    /**
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * @var Response
+     */
+    private $response;
+
+    /**
+     * @var Router
+     */
+    private $routerClass = "Router";
+
+    /**
+     * @var Request
+     */
+    private $requestClass = "Request";
+
+    /**
+     * @var Response
+     */
+    private $responseClass = "Response";
+
+    private $running = true;
+
+    private function __construct() {
+    }
 
     public function run() {
         try {
@@ -25,11 +58,11 @@ final class BPF {
         } catch (Exception $e) {
             $errmsg = $e->getMessage();
             list($sysMsg, $apiMsg) = explode('|', $errmsg);
-            echo 'errCode['.$e->getCode().'], errMessage['.$apiMsg.']';
+            echo 'errCode[' . $e->getCode() . '], errMessage[' . $apiMsg . ']';
         }
     }
 
-    public function dispatch(){
+    public function dispatch() {
 //        $this->running = true;
 //        register_shutdown_function(array(&$this, "shutdown"));
         $router = new $this->routerClass();
@@ -39,40 +72,23 @@ final class BPF {
         $controller = $this->getController($class);
         $this->currentController = $class;
         $page = $controller->execute();
-        if ($this->getResponse()->isAjax){
+        if ($this->getResponse()->isAjax) {
             header('Content-type: application/json');
             echo json_encode($this->getResponse()->getAttr());
-        }
-        else {
+        } else {
             BPF::getInstance()->getResponse()->render($page);
         }
         $interceptor->after();
 //        $this->running = false;
     }
 
-    public function getConfig($name = 'Config_Common', $key = '') {
-        if (empty($this->configures[$name])){
-            $this->configures[$name] = $this->loadConfig($name,$key);
-        }
-        return $this->configures[$name];
-    }
-
-    public function loadConfig($name,$key='') {
-        $config = $name::$config;
-        return empty($key) ? $config : $config[$key];
-    }
-    
-    private $configures = array ();
-    
-    protected function getInterceptor($class="WEBInterceptor", $path="interceptor") {
-        if(!$this->interceptor){
+    protected function getInterceptor($class = "WEBInterceptor", $path = "interceptor") {
+        if (!$this->interceptor) {
             $this->interceptor = new $class();
         }
         return $this->interceptor;
     }
-    
-    private $interceptor = null;
-    
+
     /**
      * @param string $class
      * @return Controller
@@ -94,57 +110,52 @@ final class BPF {
     }
 
     /**
-     * @return Controller
+     * @return Response
      */
-    public function getCurrentController(){
-        return $this->currentController;
+    public function getResponse() {
+        return $this->response;
     }
 
-    private $controllers = array();
+    /**
+     * @return BPF The instance of BPF
+     */
+    public static function &getInstance() {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
 
-    public $currentController = null;
+    public function getConfig($name = 'Config_Common', $key = '') {
+        if (empty($this->configures[$name])) {
+            $this->configures[$name] = $this->loadConfig($name, $key);
+        }
+        return $this->configures[$name];
+    }
+
+    public function loadConfig($name, $key = '') {
+        $config = $name::$config;
+        return empty($key) ? $config : $config[$key];
+    }
 
     /**
-     * @var Router
+     * @return Controller
      */
-    private $router;
+    public function getCurrentController() {
+        return $this->currentController;
+    }
 
     public function setRouterClass($class) {
         $this->routerClass = $class;
     }
 
-    /**
-     * @var Request
-     */
-    private $request;
-
     public function setRequestclass($class) {
         $this->requestClass = $class;
     }
 
-    /**
-     * @var Response
-     */
-    private $response;
-
     public function setResponseClass($class) {
         $this->responseClass = $class;
     }
-
-    /**
-     * @var Router
-     */
-    private $routerClass = "Router";
-
-    /**
-     * @var Request
-     */
-    private $requestClass = "Request";
-
-    /**
-     * @var Response
-     */
-    private $responseClass = "Response";
 
     /**
      * @return Request
@@ -153,12 +164,11 @@ final class BPF {
         return $this->request;
     }
 
-    /**
-     * @return Response
-     */
-    public function getResponse() {
-        return $this->response;
-    }
+//    public function shutdown() {
+//        if ($this->running) {
+//            Logger::warning('[error]: system is exception (*>﹏<*) ! [time]: '.date('Y-m-d H:i:s'));
+//        }
+//    }
 
     /**
      * @return Router
@@ -166,13 +176,5 @@ final class BPF {
     public function getRouter() {
         return $this->router;
     }
-
-//    public function shutdown() {
-//        if ($this->running) {
-//            Logger::warning('[error]: system is exception (*>﹏<*) ! [time]: '.date('Y-m-d H:i:s'));
-//        }
-//    }
-
-    private $running = true;
 
 }

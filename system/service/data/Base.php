@@ -1,31 +1,33 @@
 <?php
+
 /**
  * $Id: Base.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
  * class Service_Data_Base
  */
 abstract class Service_Data_Base {
-    
-    private $daoList = null;
-    public $enable_cache_empty = true;
 
+    public $enable_cache_empty = true;
     /**
      * cache 功能是否开启
+     *
      * @var boolean
      */
     public $enableCache = true;
-
+    private $daoList = null;
 
     public function __construct() {
     }
 
-    public function enableCache ($boolean) {
+    public function enableCache($boolean) {
         $this->enableCache = $boolean;
     }
 
     /**
      * 优先使用APP_PATH下面的dao，其次使用core下面的
      * core为公共的，app下面app当前的
+     *
      * @param $daoName - string
+     *
      * @return Db_Dao
      */
     public function getDao($daoName) {
@@ -33,6 +35,18 @@ abstract class Service_Data_Base {
             $this->daoList[$daoName] = new $daoName();
         }
         return $this->daoList[$daoName];
+    }
+
+    /**
+     * 将ID数组格式化成例如 1,2,3
+     */
+    public function join_id_array($id_array) {
+        $id_array = $this->format_id_array($id_array);
+        if (empty($id_array)) {
+            return '';
+        } else {
+            return join(',', $id_array);
+        }
     }
 
     /**
@@ -44,7 +58,7 @@ abstract class Service_Data_Base {
         if (empty($id_array) || !is_array($id_array)) {
             return array();
         }
-        foreach ($id_array as $k=>$v) {
+        foreach ($id_array as $k => $v) {
             if (empty($v)) {
                 unset($id_array[$k]);
             } else {
@@ -55,21 +69,9 @@ abstract class Service_Data_Base {
     }
 
     /**
-     * 将ID数组格式化成例如 1,2,3
-     */
-    public function join_id_array ($id_array) {
-        $id_array = $this->format_id_array($id_array);
-        if (empty($id_array)) {
-            return '';
-        } else {
-            return join(',',$id_array);
-        }
-    }
-
-    /**
      * 将 array('id1','id2') 这样的数组变成 'id1','id2' 这样的字符串，用户sql语句
      */
-    public function join_string_array ($ids,$glue="'") {
+    public function join_string_array($ids, $glue = "'") {
         if (empty($ids) || !is_array($ids)) {
             return '';
         } else {
@@ -77,7 +79,7 @@ abstract class Service_Data_Base {
             foreach ($ids as $val) {
                 $tmp[] = addslashes($val);
             }
-            return "$glue".join("$glue,$glue",$tmp)."$glue";
+            return "$glue" . join("$glue,$glue", $tmp) . "$glue";
         }
     }
 }

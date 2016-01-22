@@ -1,11 +1,10 @@
 <?php
+
 /**
  * $Id Base.php 2015-01-04 11:14 wangguoxing $
- * Desc: 
+ * Desc:
  */
 abstract class Controller_App_Base extends Controller {
-
-    abstract public function call();
 
     public function execute() {
         try {
@@ -18,6 +17,8 @@ abstract class Controller_App_Base extends Controller {
             throw new Exception($e->getMessage(), $e->getCode());
         }
     }
+
+    abstract public function call();
 
     /**
      * @return string

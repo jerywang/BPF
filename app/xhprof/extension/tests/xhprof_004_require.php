@@ -3,7 +3,7 @@
 // This file is part of xhprof_004.phpt test.
 
 function bar() {
-  echo "I am in bar()...\n";
+    echo "I am in bar()...\n";
 }
 
 // run some top-level code in this file.

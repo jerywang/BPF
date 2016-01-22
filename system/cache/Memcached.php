@@ -1,7 +1,7 @@
 <?php
+
 /**
  * Cache_Memcached
- *
  */
 class Cache_Memcached extends Memcached {
 
@@ -12,11 +12,11 @@ class Cache_Memcached extends Memcached {
      */
     public $enableCache = true;
 
-    public function enableCache ($boolean) {
+    public function enableCache($boolean) {
         $this->enableCache = $boolean;
     }
 
-    public function setEnable ($boolean) {
+    public function setEnable($boolean) {
         $this->enableCache = $boolean;
     }
 }
