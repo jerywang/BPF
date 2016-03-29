@@ -4,7 +4,14 @@
  * $Id: WEBInterceptor.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
  */
 class WEBInterceptor extends Interceptor {
+
+    private $time = null;
+    private $memory = null;
+
     public function before() {
+        $this->time = -microtime(true);
+        $this->memory = -memory_get_usage();
+
         if ($this->is_enable_debug()) {
             xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);
         }
@@ -25,6 +32,14 @@ class WEBInterceptor extends Interceptor {
     }
 
     public function after() {
+        $this->time += microtime(true);
+        $this->memory += memory_get_usage();
+        echo '
+            <div style="margin-top:50px;padding:10px;border-top:solid 1px #ccc">
+            <div>此次运行消耗内存：' . ($this->memory / 1024) . 'K</div>
+            <div>此次运行消耗时间：' . ($this->time * 1000) . 'ms</div>
+            </div>
+        ';
         if ($this->is_enable_debug()) {
             $data = xhprof_disable();
             // xhprof_lib在下载的包里存在这个目录,记得将目录包含到运行的php代码中

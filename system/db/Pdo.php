@@ -3,30 +3,20 @@
 /**
  * Class Db_Pdo
  */
-class Db_Pdo extends PDO {
+class Db_PDO extends PDO {
 
-    private $default_fetch_mode = PDO::FETCH_BOTH;
+    private $defaultFetchMode = PDO::FETCH_BOTH;
 
-    /**
-     * @param $dsn
-     * @param string $username
-     * @param string $password
-     * @param array $driver_options
-     */
-    public function __construct($dsn, $username = '', $password = '', $driver_options = array()) {
-        parent::__construct($dsn, $username, $password, $driver_options);
+    public function __construct($dsn, $user = "", $passWd = "", $driverOptions = array()) {
+        parent::__construct($dsn, $user, $passWd, $driverOptions);
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
         $this->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
     }
 
-    /**
-     * @param string $statement
-     * @return int
-     */
     public function exec($statement) {
         $stmt = parent::exec($statement);
         if ($stmt instanceof PDOStatement) {
-            $stmt->setFetchMode($this->default_fetch_mode);
+            $stmt->setFetchMode($this->defaultFetchMode);
         } else {
             $error_info = parent::errorInfo();
             if (parent::errorCode() !== '00000') {
@@ -36,25 +26,14 @@ class Db_Pdo extends PDO {
         return $stmt;
     }
 
-    /**
-     * @param string $statement
-     * @param array $driver_options
-     * @return PDOStatement
-     */
     public function prepare($statement, $driver_options = array()) {
         $stmt = parent::prepare($statement, $driver_options);
         if ($stmt instanceof PDOStatement) {
-            $stmt->setFetchMode($this->default_fetch_mode);
+            $stmt->setFetchMode($this->defaultFetchMode);
         }
         return $stmt;
     }
 
-    /**
-     * @param string $statement
-     * @param null $pdo
-     * @param null $object
-     * @return PDOStatement
-     */
     public function query($statement, $pdo = NULL, $object = NULL) {
         if ($pdo != NULL && $object != NULL) {
             $stmt = parent::query($statement, $pdo, $object);
@@ -62,15 +41,13 @@ class Db_Pdo extends PDO {
             $stmt = parent::query($statement);
         }
         if ($stmt instanceof PDOStatement) {
-            $stmt->setFetchMode($this->default_fetch_mode);
+            $stmt->setFetchMode($this->defaultFetchMode);
         }
         return $stmt;
     }
 
-    /**
-     * @param $mode
-     */
     public function setDefaultFetchMode($mode) {
-        $this->default_fetch_mode = $mode;
+        $this->defaultFetchMode = $mode;
     }
+
 }

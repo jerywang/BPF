@@ -6,16 +6,15 @@
 class Controller_App_Home_Index extends Controller_App_Base {
 
     public function call() {
+//        BPF::getInstance()->getRequest()->userId=10;
+//        echo BPF::getInstance()->getRequest()->userId;
+//        BPF::getInstance()->getRequest()->setUserInfo(array("bduss"=>"aaaqwqw11121"));
+//        print_r(BPF::getInstance()->getRequest()->getUserInfo());
         //from self data
-        $msUser = new Service_App_User();
-        $userInfo = $msUser->getUserInfo(2);
-
-        //from core api data
-        $userPage = new Service_Page_App_User();
-        $user = $userPage->execute(array('uid' => 1));
+        $user = new Service_App_User();
+        $userInfo = $user->getUserInfo(1);
 
         $this->setAttr('userInfo', $userInfo);
-        $this->setAttr('user', $user);
 
         //send string
         $this->setAttr('header', 'header component');

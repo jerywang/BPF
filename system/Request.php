@@ -5,10 +5,34 @@
  */
 class Request {
 
-    public $matches;
+    private $matches = null;
+
+    private $userInfo = null;
+
+    public function __set($name, $value) {
+        $this->$name = $value;
+    }
+
+    public function __get($name) {
+        if(isset($this->$name)) {
+            return($this->$name);
+        } else {
+            return null;
+        }
+    }
 
     public function setRouterMatches($matches) {
         $this->matches = $matches;
+    }
+
+    public function setUserInfo($userInfo = null) {
+        if($userInfo != null) {
+            $this->userInfo = $userInfo;
+        }
+    }
+
+    public function getUserInfo() {
+        return $this->userInfo;
     }
 
     public function getRouterMatches() {

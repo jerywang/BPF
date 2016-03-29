@@ -23,7 +23,7 @@ class DB_Factory {
     /**
      * @return DB_Factory
      */
-    public static function &getInstance() {
+    public static function getInstance() {
         if (!self::$instance) {
             self::$instance = new self();
         }
@@ -106,6 +106,9 @@ class DB_Factory {
                     );
                 }
                 $dsn = 'mysql:host=' . $conf['host']['host'] . ';port=' . $conf['host']['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
+                /**
+                 * @var $pdo Db_PDO
+                 */
                 $pdo = new $this->pdoClass($dsn, $conf['username'], $conf['password'], isset($conf['driver_options']) ? $conf['driver_options'] : array());
                 if (isset($conf['default_fetch_mode'])) {
                     $pdo->setDefaultFetchMode($conf['default_fetch_mode']);

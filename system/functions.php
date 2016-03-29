@@ -42,7 +42,6 @@ function autoLoadPath() {
         APP_PATH,
         APP_PATH . 'model',
         APP_PATH . 'library',
-        ROOT_PATH . 'core',
         ROOT_PATH . 'system',
     );
 }

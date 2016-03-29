@@ -3,7 +3,7 @@
 /**
  * $Id: Logger.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
  */
-class Logger {
+class Log {
 
     protected static $properties = array(
         0 => 'debug',
@@ -12,6 +12,9 @@ class Logger {
         3 => 'warning',
         4 => 'error',
     );
+
+    private function __construct() {
+    }
 
     /**
      * @param  string $str

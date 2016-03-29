@@ -8,86 +8,6 @@
 abstract class Dao_Base {
 
     /**
-     * @var DB_Factory
-     */
-    private $dbfactory = null;
-
-    public static function format_to_string($data) {
-        if (is_array($data)) {
-            $str = "";
-            foreach ($data as $key => $value) {
-                $str .= $key . "," . $value;
-            }
-            return $str;
-        }
-        return $data;
-    }
-
-    public static function escape_like($value) {
-        if (is_numeric($value) || is_string($value)) {
-            $value = self::escape_value($value);
-            return str_replace(array('_', '%'), array('\_', '\%'), $value);
-        } else {
-            return $value;
-        }
-    }
-
-    /**
-     * @brief  返回当前table主键
-     *
-     * @return string primary key name
-     */
-    abstract public function getTablePK();
-
-    /**
-     * @brief 从数据库表中获取$limit行记录
-     *
-     * @param $where - array eg: array('id'=>$id) = where id = $id;
-     * @param $order - string or array eg: id desc or array("id desc","updated desc")
-     * @param $limit - 返回的记录数
-     * @param $offset - 开始位置
-     *
-     * @return array - table row
-     */
-    public function select($where = array(), $order = null, $limit = 100, $offset = 0) {
-        $rt = $this->fetchAll($where, $order, $limit, $offset);
-        return $rt;
-    }
-
-    protected function fetchAll($where = array(), $order = null, $limit = 100, $offset = 0) {
-        $pdo = $this->getPdo();
-        $sql = "SELECT * FROM " . $this->getTableName();
-        $_where = $this->build_where($where);
-        $sql .= @$_where['where'];
-        if (is_array($order) && count($order)) {
-            $sql .= ' ORDER BY ' . implode(',', $order);
-        } else if (is_string($order) && $order) {
-            $sql .= ' ORDER BY ' . $order;
-        }
-        if ($limit > 0) {
-            $sql .= " LIMIT " . (int)$limit . " OFFSET " . $offset;
-        }
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($_where['params']);
-
-        return $stmt->fetchAll();
-    }
-
-    /**
-     * @brief  获取一个 pdo 实例
-     *
-     * @param boolean $isMaster - true :master db connection false: slave db connection
-     *
-     * @return Db_Pdo
-     */
-    protected function getPdo($isMaster = false) {
-        if (null == $this->dbfactory) {
-            $this->dbfactory = DB_Factory::getInstance();
-        }
-        return $this->dbfactory->getPdo($this->getClusterName(), $isMaster);
-    }
-
-    /**
      * @brief  返回当前cluster的名称
      *
      * @return string - pdo name
@@ -100,34 +20,61 @@ abstract class Dao_Base {
      */
     abstract public function getTableName();
 
-    protected function build_where($where) {
-        $_where = array('where' => '', 'params' => array());
-        if (empty($where)) {
-            return $_where;
-        }
-        if (is_array($where) && count($where)) {
-            foreach ($where as $key => $value) {
-                if (preg_match("/\?/", $key)) {
-                    $_where['field'][] = '(' . $key . ')';
-                } else {
-                    $_where['field'][] = '(`' . $key . '` = ?)';
-                }
-                $_where['params'][] = self::escape_value($value);
-            }
-            $_where['where'] = ' WHERE ' . implode(' AND ', $_where['field']);
-        } else {
-            $_where['where'] = ' WHERE ' . $where;
-        }
+    /**
+     * @brief  返回当前table主键
+     *
+     * @return string primary key name
+     */
+    abstract public function getTablePK();
 
-        return $_where;
+    /**
+     * 数据表字段, 该方法可以被reload
+     *
+     * @return string
+     */
+    public function getFields() {
+        return '*';
     }
 
-    public static function escape_value($value) {
-        if (is_numeric($value) || is_string($value)) {
-            return str_replace(array("'", '\\'), array("''", '\\\\'), $value);
-        } else {
-            return $value;
+    /**
+     * @brief  获取一个 pdo 实例
+     *
+     * @param boolean $isMaster - true :master db connection false: slave db connection
+     *
+     * @return Db_Pdo
+     */
+    protected function getPdo($isMaster = false) {
+        return DB_Factory::getInstance()->getPdo($this->getClusterName(), $isMaster);
+    }
+
+    /**
+     * @brief 从数据库表中获取$limit行记录
+     *
+     * @param $where - array eg: array('id'=>$id) = where id = $id;
+     * @param $order - string or array eg: id desc or array("id desc","updated desc")
+     * @param $limit - 返回的记录数
+     * @param $offset - 开始位置
+     *
+     * @return array - table row
+     */
+    public function select($where = array(), $order = null, $limit = 100, $offset = 0) {
+        $sql = 'select ' . $this->getFields() . ' from ' . $this->getTableName();
+        $_where = $this->buildWhere($where);
+        $sql .= $_where['where'];
+        if(!empty($order)) {
+            if (is_array($order)) {
+                $sql .= ' order by ' . implode(',', $order);
+            } else if (is_string($order)) {
+                $sql .= ' order by ' . $order;
+            }
         }
+        if ($limit > 0) {
+            $sql .= ' limit ' . intval($limit) . ' offset ' . intval($offset);
+        }
+        $stmt = $this->getPdo()->prepare($sql);
+        $stmt->execute($_where['params']);
+        Log::notice('SQL: ' . $sql . '| '. implode(',', $_where['params']));
+        return $stmt->fetchAll();
     }
 
     /**
@@ -136,27 +83,21 @@ abstract class Dao_Base {
      * @param $where - @see find
      * @param $field : 去重字段
      *
-     * @return int - table rowsd
+     * @return int - table rows
      */
     public function selectCount($where = array(), $field = '') {
-        $rt = $this->fetchCount($where, $field);
-        return $rt;
-    }
-
-    protected function fetchCount($where = array(), $field = '') {
-        $pdo = $this->getPdo();
-        $_where = $this->build_where($where);
+        $_where = $this->buildWhere($where);
         if ($field) {
-            $sql = "SELECT COUNT(DISTINCT {$field}) AS total_rows FROM " . $this->getTableName();
+            $sql = 'select count(distinct '.$field .') as total from ' . $this->getTableName();
         } else {
-            $sql = "SELECT COUNT(*) AS total_rows FROM " . $this->getTableName();
+            $sql = 'select count(*) as total from ' . $this->getTableName();
         }
-        $sql .= @$_where['where'];
-        $stmt = $pdo->prepare($sql);
+        $sql .= $_where['where'];
+        $stmt = $this->getPdo()->prepare($sql);
         $stmt->execute($_where['params']);
-        $rs = $stmt->fetch();
-
-        return $rs['total_rows'];
+        $res = $stmt->fetch();
+        Log::notice('SQL: ' . $sql . '| '. implode(',', $_where['params']));
+        return $res['total'];
     }
 
     /**
@@ -164,147 +105,76 @@ abstract class Dao_Base {
      *
      * @param $data - array eg: array('id'=>$id)
      * @param $where - array @see
-     * @param $status - field value type true:int flase:string
      *
      * @return int effect rows
      */
-    public function update($data = array(), $where = array(), $status = false) {
+    public function update($data = array(), $where = array()) {
+        $count = 0;
         $dataCount = count($data);
-        if (empty($data) || empty($where)) {
-            return false;
+        if (!empty($data)) {
+            $sql = 'update ' . $this->getTableName() . ' set';
+            $i = 1;
+            foreach ($data as $key => $value) {
+                $sql .= is_int($value) ? "{$key}= {$value} " : "{$key} = '{$value}'";
+                $sql .= ($i < $dataCount) ? ',' : '';
+                $i++;
+            }
+            $_where = $this->buildWhere($where);
+            $sql .= $_where['where'];
+            $stmt = $this->getPdo()->prepare($sql);
+            $stmt->execute($_where['params']);
+            $count = $stmt->rowCount();
+            Log::notice('SQL: ' . $sql . '| '. implode(',', $_where['params']));
         }
-        //防止误更新
-        if (is_numeric($where)) {
-            return false;
-        }
-        $sql = "UPDATE " . $this->getTableName() . " SET ";
-        $i = 1;
-        foreach ($data as $key => $value) {
-            $v = self::escape_value($value);
-            $sql .= $status ? "`{$key}`= $v " : "`{$key}` = '{$v}'";
-            $sql .= ($i < $dataCount) ? ',' : '';
-            $i++;
-        }
-        $_where = $this->build_where($where);
-        $sql .= @$_where['where'];
-        $pdo = $this->getPdo(true);
-        $stmt = $pdo->prepare($sql);
-        $result = $stmt->execute($_where['params']);
-        $count = $stmt->rowCount();
-
-        return ($count == 0) ? $result : $count;
+        return $count;
     }
 
     /**
      * 向数据库表中插入一行数据
      *
-     * @param  array $data - array eg:array('column'=>$colvalue)
-     * @param  array $filter 需要插入DB的列名，有可能传递过来的数据会多于列名
+     * @param  array $array - eg:array('column'=>$colvalue)
      *
      * @return int insert id , if primary key not exists  return effect rows
      */
-    public function insert($data, $filter = array()) {
-        $_data = array();
-        if (!empty($filter) && is_array($filter)) {
-            foreach ($filter as $column) {
-                $_data[$column] = $data[$column];
-            }
-        } else {
-            $_data = $data;
-        }
-        if (empty($_data)) {
-            return false;
-        }
-        $rs = $this->_insert($_data);
-
-        return $rs;
-    }
-
-    protected function _insert($arr) {
-        $pdo = $this->getPdo(true);
+    public function insert($array) {
         $param = array();
         $values = array();
-        foreach ($arr as $v) {
+        foreach ($array as $v) {
             $values[] = "?";
             $param[] = $v;
         }
-        $sql = "INSERT INTO " . $this->getTableName() . " (`";
-        $sql .= implode('`,`', array_keys($arr));
-        $sql .= "`) VALUES (";
-        $sql .= implode(",", $values) . ")";
-        $stmt = $pdo->prepare($sql);
-        $result = $stmt->execute($param);
-        $id = $pdo->lastInsertId();
+        $sql = 'insert into ' . $this->getTableName() .' (' . implode(',', array_keys($array)) . ') values (';
+        $sql .= implode(',', $values).')';
+        $stmt = $this->getPdo()->prepare($sql);
+        $stmt->execute($param);
+        $id = $this->getPdo()->lastInsertId();
+        Log::notice('SQL: ' . $sql . '| '. implode(',', $param));
         if ($id) {
             return $id;
         }
         $count = $stmt->rowCount();
-
-        return ($count == 0) ? $result : $count;
-    }
-
-    /**
-     * 批量插入多行数据
-     *
-     * @param $data array eg:array(array('column'=>$colvalue1),array('column'=>$colvalue2))
-     * @param bool $isIgnore
-     *
-     * @return bool|string
-     */
-    public function batchInsert($data, $isIgnore = false) {
-        if (empty($data)) {
-            return false;
-        }
-        $_data = $data;
-        $pdo = $this->getPdo(true);
-        $param = array();
-        $values = array();
-
-        //过滤掉重复提交的报错
-        $ignore = "";
-        if ($isIgnore) {
-            $ignore = "ignore";
-        }
-        $sql = "INSERT {$ignore} INTO " . $this->getTableName() . " (`";
-        $sql .= implode('`,`', array_keys(array_pop($data))) . "`) VALUES ";
-        foreach ($_data as $arr) {
-            unset($values);
-            foreach ($arr as $v) {
-                $values[] = "?";
-                $param[] = $v;
-            }
-            $sql .= "(";
-            $sql .= implode(",", $values) . "),";
-        }
-        $sql = rtrim($sql, ',');
-        $stmt = $pdo->prepare($sql);
-        $result = $stmt->execute($param);
-        $id = $pdo->lastInsertId();
-        if ($id) {
-            return $id;
-        }
-        $count = $stmt->rowCount();
-
-        return ($count == 0) ? $result : $count;
+        return $count;
     }
 
     /**
      * 对数据库表中数据进行删除
      *
-     * @param $where - array eg:array('column'=>$colvalue)
+     * @param $where - array eg:array('column'=>$value)
      *
      * @return int $result -  effect rows
      */
     public function delete($where) {
-        $pdo = $this->getPdo(true);
-        $_where = $this->build_where($where);
-        $sql = "delete from " . $this->getTableName();
-        $sql .= @$_where['where'];
-        $stmt = $pdo->prepare($sql);
-        $result = $stmt->execute($_where['params']);
-        $rs = $stmt->rowCount();
-
-        return ($rs == 0) ? $result : $rs;
+        $count = 0;
+        if(!empty($where)) {
+            $_where = $this->buildWhere($where);
+            $sql = 'delete from ' . $this->getTableName();
+            $sql .= @$_where['where'];
+            $stmt = $this->getPdo()->prepare($sql);
+            $stmt->execute($_where['params']);
+            Log::notice('SQL: ' . $sql . '| '. implode(',', $_where['params']));
+            $count = $stmt->rowCount();
+        }
+        return $count;
     }
 
     /**
@@ -312,21 +182,20 @@ abstract class Dao_Base {
      *
      * @param string $sql SQL语句
      * @param array $params SQL绑定参数
-     * @param boolean $write 数据库主机选择
      *
      * @return array|null|string
      */
-    public function execute($sql, $params = array(), $write = false) {
-        $pdo = $this->getPdo($write);
-        $stmt = $pdo->prepare($sql);
+    public function execute($sql, $params = array()) {
+        $stmt = $this->getPdo()->prepare($sql);
         if (!$stmt->execute($params)) {
             return false;
         }
+        Log::notice('SQL: ' . $sql . '| '. implode(',', $params));
         $type = strtoupper(substr($sql, 0, 6));
         $result = null;
         switch ($type) {
             case 'INSERT':
-                $result = $pdo->lastInsertId();
+                $result = $this->getPdo()->lastInsertId();
                 break;
 
             case 'UPDATE':
@@ -346,6 +215,23 @@ abstract class Dao_Base {
         }
 
         return $result;
+    }
+
+    private function buildWhere($where) {
+        $_where = array('where' => '', 'params' => array());
+        if (!empty($where)) {
+            if (is_array($where)) {
+                foreach ($where as $key => $value) {
+                    $_where['fields'][] = '(' . $key . ' = ?)';
+                    $_where['params'][] = $value;
+                }
+                $_where['where'] = ' WHERE ' . implode(' AND ', $_where['fields']);
+            } else {
+                $_where['where'] = ' WHERE ' . $where;
+            }
+        }
+
+        return $_where;
     }
 
 }

@@ -2,7 +2,7 @@
 
 /**
  * class App_Config_Common
- * @author jerry
+ * @author wangguoxing
  */
 class Config_Common {
 

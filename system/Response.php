@@ -8,7 +8,7 @@ class Response {
     const COOKIE_DOMAIN = "cookie_domain";
     const COOKIE_PATH = "cookie_path";
     public $data = array();
-    public $isAjax = false;
+    public $isJson = false;
 
     public function redirect($url, $permanent = false) {
         header("Location: $url", true, $permanent ? 301 : 302);
@@ -56,8 +56,8 @@ class Response {
         return $this->data;
     }
 
-    public function isAjax($bool = true) {
-        $this->isAjax = $bool;
+    public function isJson($bool = true) {
+        $this->isJson = $bool;
     }
 
 }

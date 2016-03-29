@@ -3,7 +3,7 @@
 class Util_String {
     /**
      * 合法邮箱验证
-     * @param unknown_type $email
+     * @param String $email
      * @return bool
      */
     public static function is_valid($email) {
@@ -57,39 +57,6 @@ class Util_String {
             }
         }
         return $slice;
-    }
-
-    /**
-     * 获取get，post提交参数值
-     * @param unknown_type $strParam
-     * @param bool $set_var
-     */
-    public static function q($strParam, $set_var = false) {
-        $value = "";
-        $var = array();
-        if (!empty ($_POST) || !empty ($_GET)) {
-            $keys = explode(",", $strParam);
-            if (count($keys) > 1) {
-                $set_var = true;
-            }
-            foreach ($keys as $key => $item) {
-                if (isset ($_POST [$item])) {
-                    $var [$item] = ($_POST [$item]);
-                }
-                if (isset ($_GET [$item])) {
-                    $var [$item] = ($_GET [$item]);
-                }
-            }
-            if ($set_var) {
-                $value = $var;
-            } else {
-                $value = isset ($_GET [$strParam]) ? ($_GET [$strParam]) : (isset ($_POST [$strParam]) ? ($_POST [$strParam]) : "");
-            }
-        } else {
-            global $$strParam;
-            $value = $$strParam;
-        }
-        return is_array($value) ? $value : trim($value);
     }
 
     /**

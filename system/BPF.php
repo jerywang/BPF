@@ -56,23 +56,31 @@ final class BPF {
             $this->response = new $this->responseClass();
             $this->dispatch();
         } catch (Exception $e) {
-            $errmsg = $e->getMessage();
-            list($sysMsg, $apiMsg) = explode('|', $errmsg);
-            echo 'errCode[' . $e->getCode() . '], errMessage[' . $apiMsg . ']';
+            $errMsg = $e->getMessage();
+            list($sysMsg, $apiMsg) = explode('|', $errMsg);
+            $errMsg =  'errCode[' . $e->getCode() . '], errMessage[' . $apiMsg . ']';
+            Log::fatal($errMsg);
+            echo $errMsg;
         }
     }
 
     public function dispatch() {
 //        $this->running = true;
 //        register_shutdown_function(array(&$this, "shutdown"));
+        /**
+         * @var $router Router
+         */
         $router = new $this->routerClass();
         $class = $router->mapping();
+        /**
+         * @var Interceptor $interceptor
+         */
         $interceptor = $this->getInterceptor();
         $interceptor->before();
         $controller = $this->getController($class);
         $this->currentController = $class;
         $page = $controller->execute();
-        if ($this->getResponse()->isAjax) {
+        if ($this->getResponse()->isJson) {
             header('Content-type: application/json');
             echo json_encode($this->getResponse()->getAttr());
         } else {
@@ -81,8 +89,8 @@ final class BPF {
         $interceptor->after();
 //        $this->running = false;
     }
-
     protected function getInterceptor($class = "WEBInterceptor", $path = "interceptor") {
+
         if (!$this->interceptor) {
             $this->interceptor = new $class();
         }
@@ -119,7 +127,7 @@ final class BPF {
     /**
      * @return BPF The instance of BPF
      */
-    public static function &getInstance() {
+    public static function getInstance() {
         if (!self::$instance) {
             self::$instance = new self();
         }
@@ -149,7 +157,7 @@ final class BPF {
         $this->routerClass = $class;
     }
 
-    public function setRequestclass($class) {
+    public function setRequestClass($class) {
         $this->requestClass = $class;
     }
 
