@@ -7,6 +7,8 @@ class Request {
 
     private $matches = null;
 
+    private $pathInfo = null;
+
     private $userInfo = null;
 
     public function __set($name, $value) {
@@ -21,10 +23,6 @@ class Request {
         }
     }
 
-    public function setRouterMatches($matches) {
-        $this->matches = $matches;
-    }
-
     public function setUserInfo($userInfo = null) {
         if($userInfo != null) {
             $this->userInfo = $userInfo;
@@ -35,8 +33,20 @@ class Request {
         return $this->userInfo;
     }
 
+    public function setRouterMatches($matches) {
+        $this->matches = $matches;
+    }
+
     public function getRouterMatches() {
         return $this->matches;
+    }
+
+    public function setPathInfo($path) {
+        $this->pathInfo = $path;
+    }
+
+    public function getPathInfo() {
+        return $this->pathInfo;
     }
 
     public function getClientIp() {

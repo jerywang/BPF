@@ -23,6 +23,7 @@ class Router {
             foreach ($mapping as $pattern) {
                 if (preg_match($pattern, $uri, $matches)) {
                     BPF::getInstance()->getRequest()->setRouterMatches($matches);
+                    BPF::getInstance()->getRequest()->setPathInfo($uri);
                     return $class;
                 }
             }

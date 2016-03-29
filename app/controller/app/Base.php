@@ -8,12 +8,15 @@ abstract class Controller_App_Base extends Controller {
 
     public function execute() {
         try {
-            return $this->call();
+            $res = $this->call();
+            Log::notice(BPF::getInstance()->getRequest()->getPathInfo() . ' request: ' . json_encode(array_merge($_GET, $_POST))
+                . ', response: ' . json_encode(BPF::getInstance()->getResponse()->data));
+            return $res;
         } catch (Exception $e) {
             $errmsg = $e->getMessage();
             list($sysMsg, $apiMsg) = explode('|', $errmsg);
             Log::warning(sprintf("[msg]execute %s failed code[%s] error[%s] file[%s] line[%s] time [%s]",
-                $this->getClass(), $e->getCode(), $sysMsg, $e->getFile(), $e->getLine(), date('H:i:s')), $e->getCode());
+                $this->getClass(), $e->getCode(), $sysMsg, $e->getFile(), $e->getLine(), date('H:i:s')));
             throw new Exception($e->getMessage(), $e->getCode());
         }
     }
