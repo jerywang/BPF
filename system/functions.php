@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: functions.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
+ * $Id: functions.php Jul 2, 2014 wangguoxing (554952580@qq.com) $
  */
 
 /**

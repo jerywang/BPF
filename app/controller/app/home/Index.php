@@ -1,7 +1,7 @@
 <?php
 
 /**
- * $Id: Index.php Jul 4, 2014 wangguoxing (wangguoxing@system.com) $
+ * $Id: Index.php Jul 4, 2014 wangguoxing (554952580@qq.com) $
  */
 class Controller_App_Home_Index extends Controller_App_Base {
 

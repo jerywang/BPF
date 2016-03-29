@@ -1,7 +1,7 @@
 <?php
 
 /**
- * $Id: Response.php 2014-6-30 wangguoxing (wangguoxing@system.com) $
+ * $Id: Response.php 2014-6-30 wangguoxing (554952580@qq.com) $
  */
 class Response {
 

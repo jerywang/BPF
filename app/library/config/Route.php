@@ -1,7 +1,7 @@
 <?php
 
 /**
- * $Id: Route.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
+ * $Id: Route.php Jul 2, 2014 wangguoxing (554952580@qq.com) $
  */
 class Config_Route {
 

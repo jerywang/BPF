@@ -1,7 +1,7 @@
 <?php
 
 /**
- * $Id: Controller.php Jul 4, 2014 wangguoxing (wangguoxing@system.com) $
+ * $Id: Controller.php Jul 4, 2014 wangguoxing (554952580@qq.com) $
  */
 abstract class Controller {
 

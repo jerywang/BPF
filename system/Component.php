@@ -1,7 +1,7 @@
 <?php
 
 /**
- * $Id: component.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
+ * $Id: component.php Jul 2, 2014 wangguoxing (554952580@qq.com) $
  * @desc page组件
  */
 class Component {

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: index.php Jul 2, 2014 wangguoxing (wangguoxing@system.com) $
+ * $Id: index.php Jul 2, 2014 wangguoxing (554952580@qq.com) $
  */
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);//开发环境
 //error_reporting(~E_ALL);//生产环境

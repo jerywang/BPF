@@ -1,7 +1,7 @@
 <?php
 
 /**
- * $Id: Route.php 2014-6-30 wangguoxing (wangguoxing@system.com) $
+ * $Id: Route.php 2014-6-30 wangguoxing (554952580@qq.com) $
  */
 class Router {
 
