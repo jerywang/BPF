@@ -8,15 +8,14 @@ class Config_Route {
     public static $config = array(
         'Controller_App_Home_Index' =>
             array(
-                '^/demo$',
-                '^/$'
+                "/^\/$/",
+                "/index$/",
             ),
         'Controller_App_Sample_Sample' =>
             array(
-                '^/sample$',
-                '^/sample/(.+)$',
-                //'^/sample/(.*)$',
-                '^/jerry/$',
+                "/sample$/",
+                "/sample\/[a-z]+/",
+//                "/sample\/(.*)$/",
             ),
     );
 }

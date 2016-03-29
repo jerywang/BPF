@@ -31,6 +31,8 @@ class Controller_App_Home_Index extends Controller_App_Base {
 //         $this->setAttr('header', $std);
 
         echo BPF::getInstance()->getCurrentController() . '<br>';
+        echo Util_Date::getDate();
+        print_r(BPF::getInstance()->getRequest()->getRouterMatches());
         return 'App_Home_Index';
     }
 

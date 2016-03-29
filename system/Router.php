@@ -21,7 +21,7 @@ class Router {
         $matches = array();
         foreach ($mappings as $class => $mapping) {
             foreach ($mapping as $pattern) {
-                if (@ereg($pattern, $uri, $matches)) {
+                if (preg_match($pattern, $uri, $matches)) {
                     BPF::getInstance()->getRequest()->setRouterMatches($matches);
                     return $class;
                 }
