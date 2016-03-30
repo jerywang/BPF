@@ -73,7 +73,7 @@ abstract class Dao_Base {
         }
         $stmt = $this->getPdo()->prepare($sql);
         $stmt->execute($_where['params']);
-        Log::notice('SQL: ' . $sql . '| '. implode(',', $_where['params']));
+        Log::notice('SQL: ' . $sql . ' | '. implode(',', $_where['params']));
         return $stmt->fetchAll();
     }
 
@@ -96,7 +96,7 @@ abstract class Dao_Base {
         $stmt = $this->getPdo()->prepare($sql);
         $stmt->execute($_where['params']);
         $res = $stmt->fetch();
-        Log::notice('SQL: ' . $sql . '| '. implode(',', $_where['params']));
+        Log::notice('SQL: ' . $sql . ' | '. implode(',', $_where['params']));
         return $res['total'];
     }
 
@@ -124,7 +124,7 @@ abstract class Dao_Base {
             $stmt = $this->getPdo()->prepare($sql);
             $stmt->execute($_where['params']);
             $count = $stmt->rowCount();
-            Log::notice('SQL: ' . $sql . '| '. implode(',', $_where['params']));
+            Log::notice('SQL: ' . $sql . ' | '. implode(',', $_where['params']));
         }
         return $count;
     }
@@ -148,7 +148,7 @@ abstract class Dao_Base {
         $stmt = $this->getPdo()->prepare($sql);
         $stmt->execute($param);
         $id = $this->getPdo()->lastInsertId();
-        Log::notice('SQL: ' . $sql . '| '. implode(',', $param));
+        Log::notice('SQL: ' . $sql . ' | '. implode(',', $param));
         if ($id) {
             return $id;
         }
@@ -171,7 +171,7 @@ abstract class Dao_Base {
             $sql .= $_where['where'];
             $stmt = $this->getPdo()->prepare($sql);
             $stmt->execute($_where['params']);
-            Log::notice('SQL: ' . $sql . '| '. implode(',', $_where['params']));
+            Log::notice('SQL: ' . $sql . ' | '. implode(',', $_where['params']));
             $count = $stmt->rowCount();
         }
         return $count;
@@ -190,7 +190,7 @@ abstract class Dao_Base {
         if (!$stmt->execute($params)) {
             return false;
         }
-        Log::notice('SQL: ' . $sql . '| '. implode(',', $params));
+        Log::notice('SQL: ' . $sql . ' | '. implode(',', $params));
         $type = strtoupper(substr($sql, 0, 6));
         $result = null;
         switch ($type) {

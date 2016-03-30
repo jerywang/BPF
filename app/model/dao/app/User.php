@@ -14,4 +14,8 @@ class Dao_App_User extends Dao_Base {
         return "bpf";
     }
 
+    public function getFields() {
+        return 'id,name';
+    }
+
 }
