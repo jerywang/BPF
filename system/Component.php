@@ -26,7 +26,7 @@ class Component {
         } else {
             echo $pagePath . ' not found!';
             throw new Exception(
-                $page . Const_CodeMessage::getErrMsgByCode(Const_CodeMessage::ERR_SYS_CLASS_NOT_FOUND),
+                $page . Const_CodeMessage::getMsgByCode(Const_CodeMessage::ERR_SYS_CLASS_NOT_FOUND),
                 Const_CodeMessage::ERR_SYS_CLASS_NOT_FOUND
             );
         }

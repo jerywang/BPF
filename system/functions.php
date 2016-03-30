@@ -29,7 +29,7 @@ function __autoload($className) {
         }
     }
     throw new Exception(
-        $class . ' ' .Const_CodeMessage::getErrMsgByCode(Const_CodeMessage::ERR_SYS_CLASS_NOT_FOUND),
+        $class . ' ' .Const_CodeMessage::getMsgByCode(Const_CodeMessage::ERR_SYS_CLASS_NOT_FOUND),
         Const_CodeMessage::ERR_SYS_CLASS_NOT_FOUND
     );
 }

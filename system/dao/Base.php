@@ -168,7 +168,7 @@ abstract class Dao_Base {
         if(!empty($where)) {
             $_where = $this->buildWhere($where);
             $sql = 'delete from ' . $this->getTableName();
-            $sql .= @$_where['where'];
+            $sql .= $_where['where'];
             $stmt = $this->getPdo()->prepare($sql);
             $stmt->execute($_where['params']);
             Log::notice('SQL: ' . $sql . '| '. implode(',', $_where['params']));

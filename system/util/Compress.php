@@ -1,6 +1,6 @@
 <?php
 
-class uTIL_Compress {
+class Util_Compress {
 
     /**
      * css文件过期时间,默认为12小时

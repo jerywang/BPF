@@ -28,7 +28,7 @@ class Config_Database {
                     'port' => 3306,
                 ),
                 array(
-                    'host' => '127.0.0.1',
+                    'host' => 'localhost',
                     'port' => 3306,
                 ),
             ),

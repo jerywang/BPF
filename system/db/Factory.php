@@ -78,7 +78,7 @@ class DB_Factory {
         if (empty($dbconf)) {
             //trigger_error('Config_Database:.'.$name.' error', E_USER_ERROR);
             throw new Exception(
-                Const_CodeMessage::getErrMsgByCode(Const_CodeMessage::ERR_SYS_DB_CONF),
+                Const_CodeMessage::getMsgByCode(Const_CodeMessage::ERR_SYS_DB_CONF),
                 Const_CodeMessage::ERR_SYS_DB_CONF
             );
         }
@@ -97,11 +97,11 @@ class DB_Factory {
      */
     protected function connect(&$cluster, $isMaster) {
         do {
+            $conf = $this->getOneHost($cluster, $isMaster);
             try {
-                $conf = $this->getOneHost($cluster, $isMaster);
                 if (empty($conf['slave'])) {
                     throw new Exception(
-                        Const_CodeMessage::getErrMsgByCode(Const_CodeMessage::ERR_SYS_DB_CONNECT_FAILED),
+                        Const_CodeMessage::getMsgByCode(Const_CodeMessage::ERR_SYS_DB_CONNECT_FAILED),
                         Const_CodeMessage::ERR_SYS_DB_CONNECT_FAILED
                     );
                 }
@@ -120,17 +120,16 @@ class DB_Factory {
                 }
                 return $pdo;
             } catch (Exception $e) {
-                if ($e->getCode() == 100) {
-                    throw new Exception($e->getMessage(), $e->getCode());
-                }
                 //剔除有故障slave
                 foreach ($cluster['slave'] as $key => $host) {
                     if ($conf['host']['host'] == $host['host']) {
                         unset($cluster['slave'][$key]);
                     }
                 }
+                Log::warning('connect mysql failed: '. json_encode($conf));
             }
         } while (true);
+        return null;
     }
 
     /**
