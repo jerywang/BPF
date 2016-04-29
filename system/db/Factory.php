@@ -74,15 +74,15 @@ class DB_Factory {
      * @throws Exception
      */
     protected function getClusterConf($name) {
-        $dbconf = BPF::getInstance()->getConfig('Config_Database', $name);
-        if (empty($dbconf)) {
+        $dbConf = BPF::getInstance()->getConfig('Config_Database', $name);
+        if (empty($dbConf)) {
             //trigger_error('Config_Database:.'.$name.' error', E_USER_ERROR);
             throw new Exception(
                 Const_CodeMessage::getMsgByCode(Const_CodeMessage::ERR_SYS_DB_CONF),
                 Const_CodeMessage::ERR_SYS_DB_CONF
             );
         }
-        return $dbconf;
+        return $dbConf;
     }
 
     /**
@@ -126,7 +126,7 @@ class DB_Factory {
                         unset($cluster['slave'][$key]);
                     }
                 }
-                Log::warning('connect mysql failed: '. json_encode($conf));
+                Log::warning('connect mysql failed: '. json_encode($conf['host']));
             }
         } while (true);
         return null;

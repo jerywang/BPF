@@ -32,12 +32,16 @@ class Util_Compress {
     }
 
     public function import($files) {
-        if (is_array($files)) {
-            foreach ($files as $file) {
-                include($file);
+        try {
+            if (is_array($files)) {
+                foreach ($files as $file) {
+                    include($file);
+                }
+            } else {
+                include($files);
             }
-        } else {
-            include($files);
+        } catch (Exception $e) {
+            Log::warning("import file failed:" . $files);
         }
     }
 

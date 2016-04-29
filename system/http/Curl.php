@@ -6,31 +6,32 @@ class Http_Curl {
     private $curl;
 
     /**
+     * @param bool $isMulti
      * @return Http_Curl
      */
-    public function __construct($is_multi = FALSE) {
-        if (!$is_multi) {
+    public function __construct($isMulti = false) {
+        if (!$isMulti) {
             $this->curl = curl_init();
             $this->init();
         }
     }
 
     public function init() {
-        $this->set_attribute(CURLOPT_HTTPHEADER, array("Content-type:text/xml; charset=utf-8"));
-        $this->set_attribute(CURLOPT_RETURNTRANSFER, true);
-        $this->set_attribute(CURLOPT_CONNECTTIMEOUT, $this->get_timeout());
-        $this->set_attribute(CURLOPT_TIMEOUT, $this->get_timeout());
+        $this->setAttribute(CURLOPT_HTTPHEADER, array("Content-type:text/xml; charset=utf-8"));
+        $this->setAttribute(CURLOPT_RETURNTRANSFER, true);
+        $this->setAttribute(CURLOPT_CONNECTTIMEOUT, $this->getTimeout());
+        $this->setAttribute(CURLOPT_TIMEOUT, $this->getTimeout());
     }
 
-    public function set_attribute($name, $value) {
+    public function setAttribute($name, $value) {
         curl_setopt($this->curl, $name, $value);
     }
 
-    public function get_timeout() {
+    public function getTimeout() {
         return $this->timeout;
     }
 
-    public function set_timeout($sec) {
+    public function setTimeout($sec) {
         $this->timeout = $sec;
     }
 
@@ -39,25 +40,25 @@ class Http_Curl {
      * @param string $params
      * @param string $method
      *
-     * @return multitype:mixed
+     * @return array
      */
     public function execute($url, $params = '', $method = 'GET') {
         $pos = strpos($url, '?');
         switch ($method) {
             case 'POST':
-                $this->set_attribute(CURLOPT_POST, true);
+                $this->setAttribute(CURLOPT_POST, true);
                 if (!empty($params)) {
-                    $this->set_attribute(CURLOPT_POSTFIELDS, $params);
+                    $this->setAttribute(CURLOPT_POSTFIELDS, $params);
                 }
                 break;
             case 'PUT':
-                $this->set_attribute(CURLOPT_CUSTOMREQUEST, 'PUT');
+                $this->setAttribute(CURLOPT_CUSTOMREQUEST, 'PUT');
                 if (!empty($params)) {
-                    $this->set_attribute(CURLOPT_POSTFIELDS, $params);
+                    $this->setAttribute(CURLOPT_POSTFIELDS, $params);
                 }
                 break;
             case 'DELETE':
-                $this->set_attribute(CURLOPT_CUSTOMREQUEST, 'DELETE');
+                $this->setAttribute(CURLOPT_CUSTOMREQUEST, 'DELETE');
                 if (!empty($params)) {
                     if ($pos) {
                         $url = $url . '&' . $params;
@@ -76,7 +77,7 @@ class Http_Curl {
                 }
         }
 
-        $this->set_attribute(CURLOPT_URL, $url);
+        $this->setAttribute(CURLOPT_URL, $url);
 
         $document = curl_exec($this->curl);
         $curl_info = curl_getinfo($this->curl);
@@ -90,6 +91,9 @@ class Http_Curl {
      *        "url1" => array ("url" => "http://www.system.com/"),
      *        "url2" => array ("url" => "http://www.nuomi.com/"),
      * );
+     * @param array $urls
+     * @param string $options
+     * @return array
      */
     public function multiCurl($urls, $options = "") {
         if (count($urls) <= 0) {
@@ -101,7 +105,7 @@ class Http_Curl {
                 CURLOPT_HEADER => 0,
                 CURLOPT_RETURNTRANSFER => 1,
                 CURLOPT_FOLLOWLOCATION => 1,
-                CURLOPT_TIMEOUT => $this->get_timeout()
+                CURLOPT_TIMEOUT => $this->getTimeout()
             );
         }
         // add curl options to each handle

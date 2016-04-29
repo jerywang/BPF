@@ -3,10 +3,10 @@
 /**
  * $Id: Interceptor.php Jul 4, 2014 wangguoxing (554952580@qq.com) $
  */
-abstract class Interceptor {
+interface Interceptor {
 
-    abstract public function before();
+    public function before();
 
-    abstract public function after();
+    public function after();
 
 }

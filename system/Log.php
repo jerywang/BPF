@@ -5,73 +5,70 @@
  */
 class Log {
 
-    protected static $properties = array(
-        0 => 'debug',
-        1 => 'info',
-        2 => 'notice',
-        3 => 'warning',
-        4 => 'error',
+    protected static $logStr = array(
+        'debug' => array(),
+        'info' => array(),
+        'notice' => array(),
+        'warning' => array(),
+        'error' => array(),
     );
 
     private function __construct() {
     }
 
     /**
-     * @param  string $str
      * @return bool
      */
-    public static function debug($str) {
-        return self::log($str, 0);
-    }
-
-    /**
-     * @param  string $str
-     * @param  int $property
-     * @return bool
-     */
-    private static function log($str, $property) {
-        $logFile = ROOT_PATH . 'log/' . self::$properties[$property] . '.' . date('YmdH') . '.log';
-        file_put_contents($logFile, $str . PHP_EOL, FILE_APPEND);
+    public static function log() {
+        foreach (self::$logStr as $type => $logs) {
+            if(!empty($logs)) {
+                $logFile = ROOT_PATH . 'log/' . $type . '.' . date('YmdH') . '.log';
+                $str = strtoupper($type) . ': ' . date('Y-m-d H:i:s') . ' [' . BPF::getInstance()->currentController . '] ' . implode(', ', $logs);
+                file_put_contents($logFile, $str . PHP_EOL, FILE_APPEND);
+            }
+        }
         return true;
     }
 
     /**
      * @param  string $str
-     * @return bool
+     */
+    public static function debug($str) {
+        self::$logStr['debug'][] = $str;
+    }
+
+    /**
+     * @param  string $str
      */
     public static function info($str) {
-        return self::log($str, 1);
+        self::$logStr['info'][] = $str;
     }
 
     /**
      * @param  string $str
-     * @return bool
      */
     public static function notice($str) {
-        return self::log($str, 2);
+        self::$logStr['notice'][] = $str;
     }
 
     /**
      * @param  string $str
-     * @return bool
      */
     public static function warning($str) {
-        return self::log($str, 3);
+        self::$logStr['warning'][] = $str;
     }
 
     /**
      * @param  string $str
-     * @return bool
      */
     public static function error($str) {
-        return self::log($str, 4);
+        self::$logStr['error'][] = $str;
     }
 
     /**
      * @param  string $str
-     * @return bool
      */
     public static function fatal($str) {
-        return self::log($str, 5);
+        self::$logStr['fatal'][] = $str;
     }
 }

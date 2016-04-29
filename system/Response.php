@@ -14,12 +14,14 @@ class Response {
         header("Location: $url", true, $permanent ? 301 : 302);
     }
 
-    public function setHeader($name, $value, $http_reponse_code = null) {
-        header("$name: $value", $http_reponse_code);
+    public function setHeader($name, $value, $httpResponseCode = null) {
+        header("$name: $value", $httpResponseCode);
     }
 
     /**
      * 设置浏览器local_cache
+     * @param int $maxage
+     * @param int $smaxage
      */
     public function setCacheHeader($maxage = 60, $smaxage = 0) {
         header("Cache-Control: public,max-age=$maxage,s-maxage=$smaxage,must-revalidate");

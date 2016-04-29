@@ -41,8 +41,8 @@ class Cache_Factory {
      * @return redis
      */
     public function loadRedis($name) {
-        $cache_config = BPF::getInstance()->getConfig('Config_Cache');
-        $server = $cache_config['redis'][$name];
+        $cacheConfig = BPF::getInstance()->getConfig('Config_Cache');
+        $server = $cacheConfig['redis'][$name];
         $redis = new Redis();
         $redis->connect($server['ip'], $server['port'], $server['timeout']);
         return $redis;
@@ -61,9 +61,9 @@ class Cache_Factory {
      * @return Memcache
      */
     public function loadMemcache() {
-        $cache_config = BPF::getInstance()->getConfig('Config_Cache');
+        $cacheConfig = BPF::getInstance()->getConfig('Config_Cache');
         $memcache = new Memcached();
-        $memcache->addServers($cache_config['memcache']);;
+        $memcache->addServers($cacheConfig['memcache']);;
         return $memcache;
     }
 

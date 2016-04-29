@@ -3,7 +3,7 @@
 /**
  * $Id: WEBInterceptor.php Jul 2, 2014 wangguoxing (554952580@qq.com) $
  */
-class WEBInterceptor extends Interceptor {
+class WEBInterceptor implements Interceptor {
 
     private $time = null;
     private $memory = null;
@@ -31,6 +31,7 @@ class WEBInterceptor extends Interceptor {
     }
 
     public function after() {
+        Log::log();
         if ($this->is_enable_debug()) {
             $this->time += microtime(true);
             $this->memory += memory_get_usage();
